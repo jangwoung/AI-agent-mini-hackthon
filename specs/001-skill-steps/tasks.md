@@ -26,7 +26,7 @@
 
 - [x] T001 Create Next.js project structure with TypeScript in repository root
 - [x] T002 [P] Initialize Next.js project with `npx create-next-app@latest` (TypeScript, App Router, ESLint)
-- [ ] T003 [P] Install dependencies: `firebase-admin`, `@google-cloud/aiplatform`, `zod` via npm
+- [x] T003 [P] Install dependencies: `firebase-admin`, `@google-cloud/aiplatform`, `zod` via npm
 - [x] T004 [P] Create project folder structure: `app/`, `lib/`, `components/`, `tests/` directories
 - [x] T005 [P] Configure TypeScript (`tsconfig.json`) with strict mode
 - [x] T006 [P] Configure ESLint and Prettier (`.eslintrc.json`, `.prettierrc`)
@@ -43,22 +43,22 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T009 Initialize Firebase Admin SDK in `lib/firebase/config.ts`
-- [ ] T010 [P] Initialize Vertex AI client in `lib/ai/vertex-ai.ts`
-- [ ] T011 [P] Create Firestore Security Rules file `firestore.rules` with MVP open rules
-- [ ] T012 [P] Define TypeScript types for entities in `lib/firebase/types.ts` (SkillGoal, SkillStep, Submission, Review)
-- [ ] T013 [P] Create Zod validation schemas in `lib/models/schemas.ts` (SkillGoalSchema, SkillStepSchema, SubmissionSchema, ReviewSchema)
-- [ ] T014 [P] Create model type files: `lib/models/skill-goal.ts`, `lib/models/skill-step.ts`, `lib/models/submission.ts`, `lib/models/review.ts`
-- [ ] T015 Implement Firestore helper function `createSkillGoal()` in `lib/firebase/firestore.ts`
-- [ ] T016 Implement Firestore helper function `createSkillSteps()` in `lib/firebase/firestore.ts` (batch write for 5 steps)
-- [ ] T017 Implement Firestore helper function `getStepsByGoalId()` in `lib/firebase/firestore.ts`
-- [ ] T018 Implement Firestore helper function `updateStepCompletion()` in `lib/firebase/firestore.ts`
-- [ ] T019 Implement Firestore helper function `createSubmission()` in `lib/firebase/firestore.ts`
-- [ ] T020 Implement Firestore helper function `getSubmissionByStepId()` in `lib/firebase/firestore.ts`
-- [ ] T021 Implement Firestore helper function `createReview()` in `lib/firebase/firestore.ts`
-- [ ] T022 Implement Firestore helper function `getReviewByStepId()` in `lib/firebase/firestore.ts`
-- [ ] T023 Create error handling utilities in `lib/utils/errors.ts`
-- [ ] T024 Create input validation helpers in `lib/utils/validation.ts`
+- [x] T009 Initialize Firebase Admin SDK in `lib/firebase/config.ts`
+- [x] T010 [P] Initialize Vertex AI client in `lib/ai/vertex-ai.ts`
+- [x] T011 [P] Create Firestore Security Rules file `firestore.rules` with MVP open rules
+- [x] T012 [P] Define TypeScript types for entities in `lib/firebase/types.ts` (SkillGoal, SkillStep, Submission, Review)
+- [x] T013 [P] Create Zod validation schemas in `lib/models/schemas.ts` (SkillGoalSchema, SkillStepSchema, SubmissionSchema, ReviewSchema)
+- [x] T014 [P] Create model type files: `lib/models/skill-goal.ts`, `lib/models/skill-step.ts`, `lib/models/submission.ts`, `lib/models/review.ts`
+- [x] T015 Implement Firestore helper function `createSkillGoal()` in `lib/firebase/firestore.ts`
+- [x] T016 Implement Firestore helper function `createSkillSteps()` in `lib/firebase/firestore.ts` (batch write for 5 steps)
+- [x] T017 Implement Firestore helper function `getStepsByGoalId()` in `lib/firebase/firestore.ts`
+- [x] T018 Implement Firestore helper function `updateStepCompletion()` in `lib/firebase/firestore.ts`
+- [x] T019 Implement Firestore helper function `createSubmission()` in `lib/firebase/firestore.ts`
+- [x] T020 Implement Firestore helper function `getSubmissionByStepId()` in `lib/firebase/firestore.ts`
+- [x] T021 Implement Firestore helper function `createReview()` in `lib/firebase/firestore.ts`
+- [x] T022 Implement Firestore helper function `getReviewByStepId()` in `lib/firebase/firestore.ts`
+- [x] T023 Create error handling utilities in `lib/utils/errors.ts`
+- [x] T024 Create input validation helpers in `lib/utils/validation.ts`
 
 **Checkpoint**: Foundation ready - Firebase and Vertex AI initialized, Firestore helpers work, types and schemas defined. User story implementation can now begin.
 

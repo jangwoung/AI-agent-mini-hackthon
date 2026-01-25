@@ -1,0 +1,24 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // SkillGoals: Open read/write for MVP
+    match /skillGoals/{goalId} {
+      allow read, write: if true;
+    }
+    
+    // SkillSteps: Open read/write for MVP
+    match /skillSteps/{stepId} {
+      allow read, write: if true;
+    }
+    
+    // Submissions: Open read/write for MVP
+    match /submissions/{submissionId} {
+      allow read, write: if true;
+    }
+    
+    // Reviews: Open read/write for MVP
+    match /reviews/{reviewId} {
+      allow read, write: if true;
+    }
+  }
+}
