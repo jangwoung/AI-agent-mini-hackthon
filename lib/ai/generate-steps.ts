@@ -1,4 +1,4 @@
-import { vertexAI, model } from './vertex-ai'
+import { getVertexAI, model } from './vertex-ai'
 import { StepsResponseSchema, type AIStep } from './schemas'
 import { AIServiceError } from '@/lib/utils/errors'
 import type { SkillType } from '@/lib/firebase/types'
@@ -19,16 +19,19 @@ function buildUserPrompt(skillType: SkillType, goalText: string): string {
 
 function extractJson(text: string): string {
   const stripped = text.trim()
-  const start = stripped.indexOf('[')
-  const end = stripped.lastIndexOf(']') + 1
+  // Remove markdown code fence if present
+  const withoutFence = stripped.replace(/^```(?:json)?\s*/i, '').replace(/\s*```\s*$/, '').trim()
+  const start = withoutFence.indexOf('[')
+  const end = withoutFence.lastIndexOf(']') + 1
   if (start === -1 || end <= start) {
+    console.error('[generate-steps] extractJson: no JSON array found. raw length=%d, preview=%s', text.length, text.slice(0, 200))
     throw new AIServiceError(USER_MSG, false)
   }
-  return stripped.slice(start, end)
+  return withoutFence.slice(start, end)
 }
 
 async function callVertexAI(prompt: string): Promise<string> {
-  const generativeModel = vertexAI.getGenerativeModel({
+  const generativeModel = getVertexAI().getGenerativeModel({
     model,
     systemInstruction: { role: 'system', parts: [{ text: SYSTEM }] },
     generationConfig: {
@@ -46,6 +49,9 @@ async function callVertexAI(prompt: string): Promise<string> {
   const part = candidate?.content?.parts?.[0]
 
   if (!part?.text) {
+    const finishReason = candidate?.finishReason ?? 'unknown'
+    const blockReason = (candidate as { safetyRatings?: unknown } | undefined)?.safetyRatings
+    console.error('[generate-steps] Vertex AI empty text. finishReason=%s, blockReason=%s, raw=%j', finishReason, blockReason, { candidates: response?.candidates?.length })
     throw new AIServiceError(USER_MSG, false)
   }
 
@@ -65,18 +71,30 @@ export async function generateSteps(
   const run = async (): Promise<AIStep[]> => {
     const raw = await callVertexAI(prompt)
     const jsonStr = extractJson(raw)
-    const parsed = JSON.parse(jsonStr) as unknown
-    const validated = StepsResponseSchema.parse(parsed)
-    return validated
+    let parsed: unknown
+    try {
+      parsed = JSON.parse(jsonStr) as unknown
+    } catch (e) {
+      console.error('[generate-steps] JSON.parse failed. preview=%s', jsonStr.slice(0, 500), e)
+      throw e
+    }
+    try {
+      return StepsResponseSchema.parse(parsed) as AIStep[]
+    } catch (e) {
+      console.error('[generate-steps] Zod parse failed. parsed=%j', parsed, e)
+      throw e
+    }
   }
 
   try {
     return await run()
   } catch (e) {
     if (e instanceof AIServiceError) throw e
+    console.error('[generate-steps] first attempt failed:', e)
     try {
       return await run()
-    } catch {
+    } catch (e2) {
+      console.error('[generate-steps] retry failed:', e2)
       throw new AIServiceError(USER_MSG, false)
     }
   }

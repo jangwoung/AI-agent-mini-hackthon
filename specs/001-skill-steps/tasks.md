@@ -93,30 +93,30 @@
 
 ### Implementation for User Story 1
 
-- [ ] T035 [US1] Create API route handler `POST /api/skill/generate` in `app/api/skill/generate/route.ts`
-- [ ] T036 [US1] Add request validation (Zod: `GenerateRequestSchema`) in `app/api/skill/generate/route.ts`
-- [ ] T037 [US1] Call AI step generation function in `app/api/skill/generate/route.ts`
-- [ ] T038 [US1] Create goal + 5 steps in Firestore (transaction) in `app/api/skill/generate/route.ts`
-- [ ] T039 [US1] Return response with goalId and steps in `app/api/skill/generate/route.ts`
-- [ ] T040 [US1] Add error handling (400, 500) in `app/api/skill/generate/route.ts`
-- [ ] T041 [US1] Create goal creation page `/skill/new` in `app/(routes)/skill/new/page.tsx` (Server Component)
-- [ ] T042 [US1] Create `GoalForm` component in `app/components/skill/GoalForm.tsx` (Client Component with form handling)
-- [ ] T043 [US1] Add skill type select (Next.js/Go/GCP) in `app/components/skill/GoalForm.tsx`
-- [ ] T044 [US1] Add goal text textarea in `app/components/skill/GoalForm.tsx`
-- [ ] T045 [US1] Implement form submission (POST to `/api/skill/generate`) in `app/components/skill/GoalForm.tsx`
-- [ ] T046 [US1] Add loading state during API call in `app/components/skill/GoalForm.tsx`
-- [ ] T047 [US1] Add error display on API failure in `app/components/skill/GoalForm.tsx`
-- [ ] T048 [US1] Redirect to `/skill/[goalId]` on success in `app/components/skill/GoalForm.tsx`
-- [ ] T049 [US1] Create step list page `/skill/[goalId]` in `app/(routes)/skill/[goalId]/page.tsx` (Server Component)
-- [ ] T050 [US1] Fetch goal by ID from Firestore in `app/(routes)/skill/[goalId]/page.tsx`
-- [ ] T051 [US1] Fetch steps by goalId from Firestore in `app/(routes)/skill/[goalId]/page.tsx`
-- [ ] T052 [US1] Create `StepList` component in `app/components/skill/StepList.tsx` (Server Component)
-- [ ] T053 [US1] Display goal title and skill type in `app/components/skill/StepList.tsx`
-- [ ] T054 [US1] Create `StepCard` component in `app/components/skill/StepCard.tsx` (Client Component)
-- [ ] T055 [US1] Display step title and index in `app/components/skill/StepCard.tsx`
-- [ ] T056 [US1] Show completion status (checked/unchecked) in `app/components/skill/StepCard.tsx`
-- [ ] T057 [US1] Add link to step detail page in `app/components/skill/StepCard.tsx`
-- [ ] T058 [US1] Render list of steps in `app/components/skill/StepList.tsx`
+- [x] T035 [US1] Create API route handler `POST /api/skill/generate` in `app/api/skill/generate/route.ts`
+- [x] T036 [US1] Add request validation (Zod: `GenerateRequestSchema`) in `app/api/skill/generate/route.ts`
+- [x] T037 [US1] Call AI step generation function in `app/api/skill/generate/route.ts`
+- [x] T038 [US1] Create goal + 5 steps in Firestore (transaction) in `app/api/skill/generate/route.ts`
+- [x] T039 [US1] Return response with goalId and steps in `app/api/skill/generate/route.ts`
+- [x] T040 [US1] Add error handling (400, 500) in `app/api/skill/generate/route.ts`
+- [x] T041 [US1] Create goal creation page `/skill/new` in `app/(routes)/skill/new/page.tsx` (Server Component)
+- [x] T042 [US1] Create `GoalForm` component in `app/components/skill/GoalForm.tsx` (Client Component with form handling)
+- [x] T043 [US1] Add skill type select (Next.js/Go/GCP) in `app/components/skill/GoalForm.tsx`
+- [x] T044 [US1] Add goal text textarea in `app/components/skill/GoalForm.tsx`
+- [x] T045 [US1] Implement form submission (POST to `/api/skill/generate`) in `app/components/skill/GoalForm.tsx`
+- [x] T046 [US1] Add loading state during API call in `app/components/skill/GoalForm.tsx`
+- [x] T047 [US1] Add error display on API failure in `app/components/skill/GoalForm.tsx`
+- [x] T048 [US1] Redirect to `/skill/[goalId]` on success in `app/components/skill/GoalForm.tsx`
+- [x] T049 [US1] Create step list page `/skill/[goalId]` in `app/(routes)/skill/[goalId]/page.tsx` (Server Component)
+- [x] T050 [US1] Fetch goal by ID from Firestore in `app/(routes)/skill/[goalId]/page.tsx`
+- [x] T051 [US1] Fetch steps by goalId from Firestore in `app/(routes)/skill/[goalId]/page.tsx`
+- [x] T052 [US1] Create `StepList` component in `app/components/skill/StepList.tsx` (Server Component)
+- [x] T053 [US1] Display goal title and skill type in `app/components/skill/StepList.tsx`
+- [x] T054 [US1] Create `StepCard` component in `app/components/skill/StepCard.tsx` (Client Component)
+- [x] T055 [US1] Display step title and index in `app/components/skill/StepCard.tsx`
+- [x] T056 [US1] Show completion status (checked/unchecked) in `app/components/skill/StepCard.tsx`
+- [x] T057 [US1] Add link to step detail page in `app/components/skill/StepCard.tsx`
+- [x] T058 [US1] Render list of steps in `app/components/skill/StepList.tsx`
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently. User can create goal, see 5 generated steps, view steps in list.
 
@@ -130,21 +130,21 @@
 
 ### Implementation for User Story 2
 
-- [ ] T059 [US2] Create step detail page `/skill/[goalId]/steps/[stepId]` in `app/(routes)/skill/[goalId]/steps/[stepId]/page.tsx` (Server Component)
-- [ ] T060 [US2] Fetch step by ID from Firestore in `app/(routes)/skill/[goalId]/steps/[stepId]/page.tsx`
-- [ ] T061 [US2] Fetch submission by stepId (if exists) from Firestore in `app/(routes)/skill/[goalId]/steps/[stepId]/page.tsx`
-- [ ] T062 [US2] Create `StepDetail` component in `app/components/skill/StepDetail.tsx` (Server Component)
-- [ ] T063 [US2] Display step title, task, deliverable in `app/components/skill/StepDetail.tsx`
-- [ ] T064 [US2] Create `SubmissionForm` component in `app/components/skill/SubmissionForm.tsx` (Client Component)
-- [ ] T065 [US2] Add textarea for code input in `app/components/skill/SubmissionForm.tsx`
-- [ ] T066 [US2] Add input for URL (or toggle between code/URL) in `app/components/skill/SubmissionForm.tsx`
-- [ ] T067 [US2] Add submit button in `app/components/skill/SubmissionForm.tsx`
-- [ ] T068 [US2] Display existing submission (if any) in `app/components/skill/SubmissionForm.tsx`
-- [ ] T069 [US2] Implement submission save (create/update in Firestore) in `app/components/skill/SubmissionForm.tsx`
-- [ ] T070 [US2] Show success message after submission save in `app/components/skill/SubmissionForm.tsx`
-- [ ] T071 [US2] Refresh page to show saved submission in `app/components/skill/SubmissionForm.tsx`
-- [ ] T072 [US2] Add completion checkbox (client component) in `app/components/skill/StepDetail.tsx`
-- [ ] T073 [US2] Implement completion checkbox update (calls `updateStepCompletion()` in Firestore) in `app/components/skill/StepDetail.tsx`
+- [x] T059 [US2] Create step detail page `/skill/[goalId]/steps/[stepId]` in `app/(routes)/skill/[goalId]/steps/[stepId]/page.tsx` (Server Component)
+- [x] T060 [US2] Fetch step by ID from Firestore in `app/(routes)/skill/[goalId]/steps/[stepId]/page.tsx`
+- [x] T061 [US2] Fetch submission by stepId (if exists) from Firestore in `app/(routes)/skill/[goalId]/steps/[stepId]/page.tsx`
+- [x] T062 [US2] Create `StepDetail` component in `app/components/skill/StepDetail.tsx` (Server Component)
+- [x] T063 [US2] Display step title, task, deliverable in `app/components/skill/StepDetail.tsx`
+- [x] T064 [US2] Create `SubmissionForm` component in `app/components/skill/SubmissionForm.tsx` (Client Component)
+- [x] T065 [US2] Add textarea for code input in `app/components/skill/SubmissionForm.tsx`
+- [x] T066 [US2] Add input for URL (or toggle between code/URL) in `app/components/skill/SubmissionForm.tsx`
+- [x] T067 [US2] Add submit button in `app/components/skill/SubmissionForm.tsx`
+- [x] T068 [US2] Display existing submission (if any) in `app/components/skill/SubmissionForm.tsx`
+- [x] T069 [US2] Implement submission save (create/update in Firestore) in `app/components/skill/SubmissionForm.tsx`
+- [x] T070 [US2] Show success message after submission save in `app/components/skill/SubmissionForm.tsx`
+- [x] T071 [US2] Refresh page to show saved submission in `app/components/skill/SubmissionForm.tsx`
+- [x] T072 [US2] Add completion checkbox (client component) in `app/components/skill/StepDetail.tsx`
+- [x] T073 [US2] Implement completion checkbox update (calls `updateStepCompletion()` in Firestore) in `app/components/skill/StepDetail.tsx`
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently. User can view step details, submit work (code/URL), see submission saved, toggle completion.
 
@@ -158,24 +158,24 @@
 
 ### Implementation for User Story 3
 
-- [ ] T074 [US3] Create API route handler `POST /api/skill/review` in `app/api/skill/review/route.ts`
-- [ ] T075 [US3] Add request validation (Zod: `ReviewRequestSchema`) in `app/api/skill/review/route.ts`
-- [ ] T076 [US3] Verify step and submission exist in `app/api/skill/review/route.ts`
-- [ ] T077 [US3] Call AI review generation function in `app/api/skill/review/route.ts`
-- [ ] T078 [US3] Create/update review in Firestore in `app/api/skill/review/route.ts`
-- [ ] T079 [US3] Return response with review in `app/api/skill/review/route.ts`
-- [ ] T080 [US3] Add error handling (400, 404, 500) in `app/api/skill/review/route.ts`
-- [ ] T081 [US3] Fetch review by stepId (if exists) from Firestore in `app/(routes)/skill/[goalId]/steps/[stepId]/page.tsx`
-- [ ] T082 [US3] Add "Generate Review" button (only if submission exists) in `app/components/skill/SubmissionForm.tsx`
-- [ ] T083 [US3] Add loading state during review API call in `app/components/skill/SubmissionForm.tsx`
-- [ ] T084 [US3] Create `ReviewDisplay` component in `app/components/skill/ReviewDisplay.tsx` (Server Component)
-- [ ] T085 [US3] Display Keep section in `app/components/skill/ReviewDisplay.tsx`
-- [ ] T086 [US3] Display Problem section in `app/components/skill/ReviewDisplay.tsx`
-- [ ] T087 [US3] Display Try section in `app/components/skill/ReviewDisplay.tsx`
-- [ ] T088 [US3] Display Next section in `app/components/skill/ReviewDisplay.tsx`
-- [ ] T089 [US3] Implement review generation (POST to `/api/skill/review`) in `app/components/skill/SubmissionForm.tsx`
-- [ ] T090 [US3] Save review to Firestore and display on page in `app/components/skill/SubmissionForm.tsx`
-- [ ] T091 [US3] Show error if review generation fails in `app/components/skill/SubmissionForm.tsx`
+- [x] T074 [US3] Create API route handler `POST /api/skill/review` in `app/api/skill/review/route.ts`
+- [x] T075 [US3] Add request validation (Zod: `ReviewRequestSchema`) in `app/api/skill/review/route.ts`
+- [x] T076 [US3] Verify step and submission exist in `app/api/skill/review/route.ts`
+- [x] T077 [US3] Call AI review generation function in `app/api/skill/review/route.ts`
+- [x] T078 [US3] Create/update review in Firestore in `app/api/skill/review/route.ts`
+- [x] T079 [US3] Return response with review in `app/api/skill/review/route.ts`
+- [x] T080 [US3] Add error handling (400, 404, 500) in `app/api/skill/review/route.ts`
+- [x] T081 [US3] Fetch review by stepId (if exists) from Firestore in `app/(routes)/skill/[goalId]/steps/[stepId]/page.tsx`
+- [x] T082 [US3] Add "Generate Review" button (only if submission exists) in `app/components/skill/SubmissionForm.tsx`
+- [x] T083 [US3] Add loading state during review API call in `app/components/skill/SubmissionForm.tsx`
+- [x] T084 [US3] Create `ReviewDisplay` component in `app/components/skill/ReviewDisplay.tsx` (Server Component)
+- [x] T085 [US3] Display Keep section in `app/components/skill/ReviewDisplay.tsx`
+- [x] T086 [US3] Display Problem section in `app/components/skill/ReviewDisplay.tsx`
+- [x] T087 [US3] Display Try section in `app/components/skill/ReviewDisplay.tsx`
+- [x] T088 [US3] Display Next section in `app/components/skill/ReviewDisplay.tsx`
+- [x] T089 [US3] Implement review generation (POST to `/api/skill/review`) in `app/components/skill/SubmissionForm.tsx`
+- [x] T090 [US3] Save review to Firestore and display on page in `app/components/skill/SubmissionForm.tsx`
+- [x] T091 [US3] Show error if review generation fails in `app/components/skill/SubmissionForm.tsx`
 
 **Checkpoint**: At this point, User Stories 1, 2, AND 3 should all work independently. User can trigger review, see structured feedback (Keep/Problem/Try/Next), review is saved.
 
@@ -189,14 +189,14 @@
 
 ### Implementation for User Story 4
 
-- [ ] T092 [US4] Make completion checkbox functional in `app/components/skill/StepCard.tsx`
-- [ ] T093 [US4] Update Firestore on toggle (optimistic update) in `app/components/skill/StepCard.tsx`
-- [ ] T094 [US4] Show loading state during update in `app/components/skill/StepCard.tsx`
-- [ ] T095 [US4] Ensure completion checkbox updates Firestore in step detail page `app/components/skill/StepDetail.tsx`
-- [ ] T096 [US4] Ensure status reflects in real-time in `app/components/skill/StepDetail.tsx`
-- [ ] T097 [US4] Add visual distinction for completed steps (checked or grayed out) in `app/components/skill/StepCard.tsx`
-- [ ] T098 [US4] Ensure checkbox state synced with Firestore in `app/components/skill/StepCard.tsx`
-- [ ] T099 [US4] Ensure list page shows updated completion status in `app/components/skill/StepList.tsx`
+- [x] T092 [US4] Make completion checkbox functional in `app/components/skill/StepCard.tsx`
+- [x] T093 [US4] Update Firestore on toggle (optimistic update) in `app/components/skill/StepCard.tsx`
+- [x] T094 [US4] Show loading state during update in `app/components/skill/StepCard.tsx`
+- [x] T095 [US4] Ensure completion checkbox updates Firestore in step detail page `app/components/skill/StepDetail.tsx`
+- [x] T096 [US4] Ensure status reflects in real-time in `app/components/skill/StepDetail.tsx`
+- [x] T097 [US4] Add visual distinction for completed steps (checked or grayed out) in `app/components/skill/StepCard.tsx`
+- [x] T098 [US4] Ensure checkbox state synced with Firestore in `app/components/skill/StepCard.tsx`
+- [x] T099 [US4] Ensure list page shows updated completion status in `app/components/skill/StepList.tsx`
 
 **Checkpoint**: All user stories should now be independently functional. User can mark step complete/incomplete, status persists, list page shows updated status.
 
@@ -206,21 +206,21 @@
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T100 [P] Improve error handling: user-friendly error messages throughout all components
-- [ ] T101 [P] Add network error handling in API routes and components
-- [ ] T102 [P] Add AI service error handling with retry UI in `app/components/skill/GoalForm.tsx` and `app/components/skill/SubmissionForm.tsx`
-- [ ] T103 [P] Add Firestore error handling with user messages in all Firestore operations
-- [ ] T104 [P] Add loading states: spinners on buttons during API calls in all form components
-- [ ] T105 [P] Add disabled buttons during operations in all form components
+- [x] T100 [P] Improve error handling: user-friendly error messages throughout all components
+- [x] T101 [P] Add network error handling in API routes and components
+- [x] T102 [P] Add AI service error handling with retry UI in `app/components/skill/GoalForm.tsx` and `app/components/skill/SubmissionForm.tsx`
+- [x] T103 [P] Add Firestore error handling with user messages in all Firestore operations
+- [x] T104 [P] Add loading states: spinners on buttons during API calls in all form components
+- [x] T105 [P] Add disabled buttons during operations in all form components
 - [ ] T106 [P] Add skeleton loaders for data fetching in `app/(routes)/skill/[goalId]/page.tsx` and `app/(routes)/skill/[goalId]/steps/[stepId]/page.tsx`
 - [ ] T107 [P] Install Tailwind CSS (or use CSS modules) for styling
 - [ ] T108 [P] Style forms, buttons, cards with Tailwind CSS
 - [ ] T109 [P] Add responsive layout for mobile devices
-- [ ] T110 [P] Manual testing: Test all 4 user flows end-to-end (create goal → submit → review → complete)
-- [ ] T111 [P] Manual testing: Test error scenarios (AI failure, network error)
-- [ ] T112 [P] Manual testing: Test edge cases (empty input, long text)
-- [ ] T113 Fix critical bugs blocking MVP deployment
-- [ ] T114 Run quickstart.md validation to ensure setup works
+- [x] T110 [P] Manual testing: Test all 4 user flows end-to-end (create goal → submit → review → complete)
+- [x] T111 [P] Manual testing: Test error scenarios (AI failure, network error)
+- [x] T112 [P] Manual testing: Test edge cases (empty input, long text)
+- [x] T113 Fix critical bugs blocking MVP deployment
+- [x] T114 Run quickstart.md validation to ensure setup works
 
 ---
 
@@ -325,12 +325,12 @@ With multiple developers:
 ## Summary
 
 - **Total Task Count**: 114
-- **Task Count per User Story**: 
+- **Task Count per User Story**:
   - US1 (P1): 24 tasks
   - US2 (P2): 15 tasks
   - US3 (P3): 18 tasks
   - US4 (P4): 8 tasks
-- **Parallel Opportunities**: 
+- **Parallel Opportunities**:
   - Phase 1: 5 tasks
   - Phase 2: 5 tasks
   - Phase 3: 2 tasks

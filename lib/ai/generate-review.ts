@@ -1,4 +1,4 @@
-import { vertexAI, model } from './vertex-ai'
+import { getVertexAI, model } from './vertex-ai'
 import { ReviewResponseSchema, type ReviewResponse } from './schemas'
 import { AIServiceError } from '@/lib/utils/errors'
 import type { SkillType } from '@/lib/firebase/types'
@@ -36,7 +36,7 @@ function extractJson(text: string): string {
 }
 
 async function callVertexAI(prompt: string): Promise<string> {
-  const generativeModel = vertexAI.getGenerativeModel({
+  const generativeModel = getVertexAI().getGenerativeModel({
     model,
     generationConfig: {
       maxOutputTokens: 4096,

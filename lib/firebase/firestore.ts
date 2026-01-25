@@ -1,4 +1,6 @@
-import { db } from './config'
+import { getDb } from './config'
+
+const db = () => getDb()
 import type {
   SkillGoal,
   SkillStep,
@@ -31,7 +33,7 @@ export async function createSkillGoal(
   goalText: string,
   userId?: string
 ): Promise<SkillGoal> {
-  const goalRef = db.collection('skillGoals').doc()
+  const goalRef = db().collection('skillGoals').doc()
   const now = new Date()
 
   const goal: Omit<SkillGoal, 'id'> = {
@@ -68,12 +70,12 @@ export async function createSkillSteps(
     throw new Error('Must create exactly 5 steps')
   }
 
-  const batch = db.batch()
+  const batch = db().batch()
   const now = new Date()
   const createdSteps: SkillStep[] = []
 
   steps.forEach((step) => {
-    const stepRef = db.collection('skillSteps').doc()
+    const stepRef = db().collection('skillSteps').doc()
     const stepData: Omit<SkillStep, 'id'> = {
       goalId,
       index: step.index,
@@ -103,7 +105,7 @@ export async function createSkillSteps(
  * Get all steps for a goal, ordered by index
  */
 export async function getStepsByGoalId(goalId: string): Promise<SkillStep[]> {
-  const snapshot = await db
+  const snapshot = await db()
     .collection('skillSteps')
     .where('goalId', '==', goalId)
     .orderBy('index', 'asc')
@@ -131,7 +133,7 @@ export async function updateStepCompletion(
   stepId: string,
   done: boolean
 ): Promise<void> {
-  await db.collection('skillSteps').doc(stepId).update({ done })
+  await db().collection('skillSteps').doc(stepId).update({ done })
 }
 
 /**
@@ -143,7 +145,7 @@ export async function createSubmission(
   contentType: Submission['contentType']
 ): Promise<Submission> {
   // Delete existing submission for this step (if any)
-  const existingSnapshot = await db
+  const existingSnapshot = await db()
     .collection('submissions')
     .where('stepId', '==', stepId)
     .limit(1)
@@ -154,7 +156,7 @@ export async function createSubmission(
   }
 
   // Create new submission
-  const submissionRef = db.collection('submissions').doc()
+  const submissionRef = db().collection('submissions').doc()
   const now = new Date()
 
   const submission: Omit<Submission, 'id'> = {
@@ -181,7 +183,7 @@ export async function createSubmission(
 export async function getSubmissionByStepId(
   stepId: string
 ): Promise<Submission | null> {
-  const snapshot = await db
+  const snapshot = await db()
     .collection('submissions')
     .where('stepId', '==', stepId)
     .limit(1)
@@ -214,7 +216,7 @@ export async function createReview(
   next: string
 ): Promise<Review> {
   // Delete existing review for this step (if any)
-  const existingSnapshot = await db
+  const existingSnapshot = await db()
     .collection('reviews')
     .where('stepId', '==', stepId)
     .limit(1)
@@ -225,7 +227,7 @@ export async function createReview(
   }
 
   // Create new review
-  const reviewRef = db.collection('reviews').doc()
+  const reviewRef = db().collection('reviews').doc()
   const now = new Date()
 
   const review: Omit<Review, 'id'> = {
@@ -252,7 +254,7 @@ export async function createReview(
  * Get review for a step
  */
 export async function getReviewByStepId(stepId: string): Promise<Review | null> {
-  const snapshot = await db
+  const snapshot = await db()
     .collection('reviews')
     .where('stepId', '==', stepId)
     .limit(1)
@@ -280,7 +282,7 @@ export async function getReviewByStepId(stepId: string): Promise<Review | null> 
  * Get a skill goal by ID
  */
 export async function getSkillGoalById(goalId: string): Promise<SkillGoal | null> {
-  const doc = await db.collection('skillGoals').doc(goalId).get()
+  const doc = await db().collection('skillGoals').doc(goalId).get()
 
   if (!doc.exists) {
     return null
@@ -301,7 +303,7 @@ export async function getSkillGoalById(goalId: string): Promise<SkillGoal | null
  * Get a skill step by ID
  */
 export async function getSkillStepById(stepId: string): Promise<SkillStep | null> {
-  const doc = await db.collection('skillSteps').doc(stepId).get()
+  const doc = await db().collection('skillSteps').doc(stepId).get()
 
   if (!doc.exists) {
     return null
