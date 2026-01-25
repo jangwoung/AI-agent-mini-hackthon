@@ -1,0 +1,213 @@
+openapi: 3.0.3
+info:
+  title: Skill Review Generation API
+  description: Generate structured code review feedback (Keep/Problem/Try/Next) using Vertex AI (Gemini)
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+    description: Local development
+  - url: https://your-domain.vercel.app
+    description: Production
+
+paths:
+  /api/skill/review:
+    post:
+      summary: Generate code review
+      description: |
+        Generates structured review feedback (Keep/Problem/Try/Next) for submitted work.
+        Uses Vertex AI (Gemini 1.5 Flash) with JSON schema strict mode.
+        Requires submission to exist (enforced at application level).
+        Saves the review to Firestore.
+      operationId: generateReview
+      tags:
+        - Skill
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReviewRequest'
+            examples:
+              code_submission:
+                value:
+                  skillType: nextjs
+                  goalText: Create a CRUD app with Next.js
+                  stepTitle: Set up Next.js project
+                  stepTask: Create a new Next.js project using create-next-app
+                  deliverable: A working Next.js project with TypeScript support
+                  submission: |
+                    // app/page.tsx
+                    export default function Home() {
+                      return <div>Hello World</div>
+                    }
+              url_submission:
+                value:
+                  skillType: nextjs
+                  goalText: Create a CRUD app with Next.js
+                  stepTitle: Set up Next.js project
+                  stepTask: Create a new Next.js project using create-next-app
+                  deliverable: A working Next.js project with TypeScript support
+                  submission: https://github.com/user/my-nextjs-app
+      responses:
+        '200':
+          description: Successfully generated review
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReviewResponse'
+              example:
+                reviewId: review_ghi789
+                stepId: step_xyz789
+                keep: 良い点: プロジェクト構造が整理されている。TypeScriptの設定が適切。基本的なページコンポーネントが作成されている。
+                problem: 改善点: エラーハンドリングが不足している。スタイリングがないため、見た目がシンプルすぎる。
+                try: 試してみて: try-catchブロックを追加し、ユーザーフレンドリーなエラーメッセージを表示。Tailwind CSSを導入してスタイリングを追加。
+                next: 次に: データベース接続を実装し、CRUD操作を追加。API routesを作成してバックエンド機能を実装。
+                createdAt: '2025-01-25T10:35:00Z'
+        '400':
+          description: Invalid request (validation error, missing submission)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: ValidationError
+                message: submission is required
+                details:
+                  field: submission
+        '404':
+          description: Step or submission not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: NotFoundError
+                message: Step or submission not found
+                details:
+                  stepId: step_xyz789
+        '500':
+          description: Server error (AI service failure, Firestore error)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: AIServiceError
+                message: Failed to generate review. Please try again.
+                details:
+                  retryable: true
+                  retryAfter: 5
+
+components:
+  schemas:
+    ReviewRequest:
+      type: object
+      required:
+        - skillType
+        - goalText
+        - stepTitle
+        - stepTask
+        - deliverable
+        - submission
+      properties:
+        skillType:
+          type: string
+          enum: [nextjs, go, gcp]
+          description: Technology type
+          example: nextjs
+        goalText:
+          type: string
+          minLength: 10
+          maxLength: 500
+          description: Original learning goal
+          example: Create a CRUD app with Next.js
+        stepTitle:
+          type: string
+          minLength: 5
+          maxLength: 200
+          description: Current step title
+          example: Set up Next.js project
+        stepTask:
+          type: string
+          minLength: 20
+          maxLength: 2000
+          description: Current step task description
+          example: Create a new Next.js project using create-next-app. Configure TypeScript and ESLint.
+        deliverable:
+          type: string
+          minLength: 10
+          maxLength: 500
+          description: Deliverable criteria for this step
+          example: A working Next.js project with TypeScript support
+        submission:
+          type: string
+          minLength: 1
+          maxLength: 100000
+          description: Submitted work (code text or URL)
+          example: https://github.com/user/my-nextjs-app
+    ReviewResponse:
+      type: object
+      required:
+        - reviewId
+        - stepId
+        - keep
+        - problem
+        - try
+        - next
+        - createdAt
+      properties:
+        reviewId:
+          type: string
+          description: Unique review identifier
+          example: review_ghi789
+        stepId:
+          type: string
+          description: Parent step identifier
+          example: step_xyz789
+        keep:
+          type: string
+          minLength: 10
+          maxLength: 2000
+          description: "Keep feedback (what's good)"
+          example: 良い点: プロジェクト構造が整理されている。TypeScriptの設定が適切。
+        problem:
+          type: string
+          minLength: 10
+          maxLength: 2000
+          description: Problem feedback (what needs improvement)
+          example: 改善点: エラーハンドリングが不足している。
+        try:
+          type: string
+          minLength: 10
+          maxLength: 2000
+          description: Try feedback (suggestions)
+          example: 試してみて: try-catchブロックを追加し、ユーザーフレンドリーなエラーメッセージを表示。
+        next:
+          type: string
+          minLength: 10
+          maxLength: 2000
+          description: Next feedback (next steps)
+          example: 次に: データベース接続を実装し、CRUD操作を追加。
+        createdAt:
+          type: string
+          format: date-time
+          description: Creation timestamp (ISO 8601)
+          example: '2025-01-25T10:35:00Z'
+    ErrorResponse:
+      type: object
+      required:
+        - error
+        - message
+      properties:
+        error:
+          type: string
+          description: Error type
+          example: ValidationError
+        message:
+          type: string
+          description: Human-readable error message
+          example: Invalid request parameters
+        details:
+          type: object
+          description: Additional error details
+          additionalProperties: true
