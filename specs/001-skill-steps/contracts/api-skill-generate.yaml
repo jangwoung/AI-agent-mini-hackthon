@@ -1,0 +1,223 @@
+openapi: 3.0.3
+info:
+  title: Skill Step Generation API
+  description: Generate 5 sequential learning steps for a skill goal using Vertex AI (Gemini)
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+    description: Local development
+  - url: https://your-domain.vercel.app
+    description: Production
+
+paths:
+  /api/skill/generate:
+    post:
+      summary: Generate learning steps
+      description: |
+        Generates exactly 5 sequential learning steps for a given skill type and goal.
+        Uses Vertex AI (Gemini 1.5 Flash) with JSON schema strict mode.
+        Saves the goal and steps to Firestore.
+      operationId: generateSteps
+      tags:
+        - Skill
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenerateRequest'
+            examples:
+              nextjs:
+                value:
+                  skillType: nextjs
+                  goalText: Create a CRUD app with Next.js
+              go:
+                value:
+                  skillType: go
+                  goalText: Build a REST API server with Go
+              gcp:
+                value:
+                  skillType: gcp
+                  goalText: Deploy a containerized app to Cloud Run
+      responses:
+        '200':
+          description: Successfully generated 5 steps
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenerateResponse'
+              example:
+                goalId: goal_abc123
+                steps:
+                  - id: step_001
+                    goalId: goal_abc123
+                    index: 1
+                    title: Set up Next.js project
+                    task: Create a new Next.js project using create-next-app. Configure TypeScript and ESLint.
+                    deliverable: A working Next.js project with TypeScript support
+                    done: false
+                    createdAt: '2025-01-25T10:00:05Z'
+                  - id: step_002
+                    goalId: goal_abc123
+                    index: 2
+                    title: Design data model
+                    task: Define the data structures for your CRUD operations. Create TypeScript interfaces.
+                    deliverable: TypeScript interfaces for your data model
+                    done: false
+                    createdAt: '2025-01-25T10:00:06Z'
+                  - id: step_003
+                    goalId: goal_abc123
+                    index: 3
+                    title: Implement API routes
+                    task: Create API route handlers for Create, Read, Update, Delete operations.
+                    deliverable: Working API routes for CRUD operations
+                    done: false
+                    createdAt: '2025-01-25T10:00:07Z'
+                  - id: step_004
+                    goalId: goal_abc123
+                    index: 4
+                    title: Build UI components
+                    task: Create React components for listing, creating, editing, and deleting items.
+                    deliverable: Functional UI components for CRUD operations
+                    done: false
+                    createdAt: '2025-01-25T10:00:08Z'
+                  - id: step_005
+                    goalId: goal_abc123
+                    index: 5
+                    title: Add form validation
+                    task: Implement client-side and server-side validation for user inputs.
+                    deliverable: Validated forms with error handling
+                    done: false
+                    createdAt: '2025-01-25T10:00:09Z'
+        '400':
+          description: Invalid request (validation error)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: ValidationError
+                message: skillType must be one of: nextjs, go, gcp
+                details:
+                  field: skillType
+                  value: invalid
+        '500':
+          description: Server error (AI service failure, Firestore error)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: AIServiceError
+                message: Failed to generate steps. Please try again.
+                details:
+                  retryable: true
+                  retryAfter: 5
+
+components:
+  schemas:
+    GenerateRequest:
+      type: object
+      required:
+        - skillType
+        - goalText
+      properties:
+        skillType:
+          type: string
+          enum: [nextjs, go, gcp]
+          description: Technology type for learning steps
+          example: nextjs
+        goalText:
+          type: string
+          minLength: 10
+          maxLength: 500
+          description: User's learning goal in plain text
+          example: Create a CRUD app with Next.js
+    GenerateResponse:
+      type: object
+      required:
+        - goalId
+        - steps
+      properties:
+        goalId:
+          type: string
+          description: ID of the created skill goal
+          example: goal_abc123
+        steps:
+          type: array
+          minItems: 5
+          maxItems: 5
+          items:
+            $ref: '#/components/schemas/SkillStep'
+    SkillStep:
+      type: object
+      required:
+        - id
+        - goalId
+        - index
+        - title
+        - task
+        - deliverable
+        - done
+        - createdAt
+      properties:
+        id:
+          type: string
+          description: Unique step identifier
+          example: step_001
+        goalId:
+          type: string
+          description: Parent goal identifier
+          example: goal_abc123
+        index:
+          type: integer
+          minimum: 1
+          maximum: 5
+          description: Sequential step number (1-5)
+          example: 1
+        title:
+          type: string
+          minLength: 5
+          maxLength: 200
+          description: Step title
+          example: Set up Next.js project
+        task:
+          type: string
+          minLength: 20
+          maxLength: 2000
+          description: Task description
+          example: Create a new Next.js project using create-next-app. Configure TypeScript and ESLint.
+        deliverable:
+          type: string
+          minLength: 10
+          maxLength: 500
+          description: Deliverable criteria
+          example: A working Next.js project with TypeScript support
+        done:
+          type: boolean
+          default: false
+          description: Completion status
+          example: false
+        createdAt:
+          type: string
+          format: date-time
+          description: Creation timestamp (ISO 8601)
+          example: '2025-01-25T10:00:05Z'
+    ErrorResponse:
+      type: object
+      required:
+        - error
+        - message
+      properties:
+        error:
+          type: string
+          description: Error type
+          example: ValidationError
+        message:
+          type: string
+          description: Human-readable error message
+          example: Invalid request parameters
+        details:
+          type: object
+          description: Additional error details
+          additionalProperties: true
