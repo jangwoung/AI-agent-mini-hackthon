@@ -5,7 +5,11 @@ import type {
   Submission,
   Review,
 } from './types'
-import { Timestamp } from 'firebase-admin/firestore'
+import {
+  Timestamp,
+  type QueryDocumentSnapshot,
+  type DocumentData,
+} from 'firebase-admin/firestore'
 
 // Convert Firestore Timestamp to Date
 function toDate(timestamp: Timestamp | Date | undefined): Date {
@@ -105,7 +109,7 @@ export async function getStepsByGoalId(goalId: string): Promise<SkillStep[]> {
     .orderBy('index', 'asc')
     .get()
 
-  return snapshot.docs.map((doc) => {
+  return snapshot.docs.map((doc: QueryDocumentSnapshot<DocumentData>) => {
     const data = doc.data()
     return {
       id: doc.id,

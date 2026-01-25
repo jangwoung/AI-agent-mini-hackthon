@@ -70,16 +70,16 @@
 
 **⚠️ CRITICAL**: Required for User Story 1 (step generation) and User Story 3 (review generation)
 
-- [ ] T025 Create step generation prompt with JSON schema strict in `lib/ai/generate-steps.ts`
-- [ ] T026 Create review generation prompt with JSON schema strict in `lib/ai/generate-review.ts`
-- [ ] T027 [P] Create Zod schema `StepsResponseSchema` for AI step generation response in `lib/ai/schemas.ts`
-- [ ] T028 [P] Create Zod schema `ReviewResponseSchema` for AI review generation response in `lib/ai/schemas.ts`
-- [ ] T029 Implement step generation function `generateSteps()` in `lib/ai/generate-steps.ts` (calls Vertex AI, validates with Zod)
-- [ ] T030 Implement review generation function `generateReview()` in `lib/ai/generate-review.ts` (calls Vertex AI, validates with Zod)
-- [ ] T031 Implement retry logic (1 retry on validation failure) in `lib/ai/generate-steps.ts`
-- [ ] T032 Implement retry logic (1 retry on validation failure) in `lib/ai/generate-review.ts`
-- [ ] T033 Add user-friendly error messages ("再生成してください") in `lib/ai/generate-steps.ts`
-- [ ] T034 Add user-friendly error messages ("再生成してください") in `lib/ai/generate-review.ts`
+- [x] T025 Create step generation prompt with JSON schema strict in `lib/ai/generate-steps.ts`
+- [x] T026 Create review generation prompt with JSON schema strict in `lib/ai/generate-review.ts`
+- [x] T027 [P] Create Zod schema `StepsResponseSchema` for AI step generation response in `lib/ai/schemas.ts`
+- [x] T028 [P] Create Zod schema `ReviewResponseSchema` for AI review generation response in `lib/ai/schemas.ts`
+- [x] T029 Implement step generation function `generateSteps()` in `lib/ai/generate-steps.ts` (calls Vertex AI, validates with Zod)
+- [x] T030 Implement review generation function `generateReview()` in `lib/ai/generate-review.ts` (calls Vertex AI, validates with Zod)
+- [x] T031 Implement retry logic (1 retry on validation failure) in `lib/ai/generate-steps.ts`
+- [x] T032 Implement retry logic (1 retry on validation failure) in `lib/ai/generate-review.ts`
+- [x] T033 Add user-friendly error messages ("再生成してください") in `lib/ai/generate-steps.ts`
+- [x] T034 Add user-friendly error messages ("再生成してください") in `lib/ai/generate-review.ts`
 
 **Checkpoint**: AI integration ready - can generate 5 steps and reviews via Vertex AI, responses validated with Zod, retry logic works.
 
