@@ -91,54 +91,45 @@ NEXT_PUBLIC_ENV=development
 ## Step 5: Install Additional Dependencies
 
 ```bash
-# Firebase Admin SDK
-npm install firebase-admin
+# Dependencies are already in package.json
+npm install
 
-# Vertex AI SDK
-npm install @google-cloud/aiplatform
-
-# Zod (validation)
-npm install zod
-
-# TypeScript types (if needed)
-npm install --save-dev @types/node
+# Main dependencies include:
+# - firebase-admin (Firestore Admin SDK)
+# - @google-cloud/vertexai (Vertex AI SDK for Gemini)
+# - zod (validation)
+# - next, react, react-dom (Next.js framework)
 ```
 
 ## Step 6: Initialize Firebase
 
-Create `lib/firebase/config.ts`:
+The Firebase configuration is already set up in `lib/firebase/config.ts` with lazy initialization:
 
 ```typescript
-import { initializeApp, getApps, cert } from 'firebase-admin/app';
-import { getFirestore } from 'firebase-admin/firestore';
-
-if (!getApps().length) {
-  initializeApp({
-    credential: cert({
-      projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-      privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
-    }),
-  });
+// Lazy initialization - only connects when getDb() is called
+export function getDb(): Firestore {
+  // Uses NEXT_PUBLIC_FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL, FIREBASE_PRIVATE_KEY
 }
-
-export const db = getFirestore();
 ```
+
+**Note**: The implementation uses lazy initialization to avoid build-time errors when environment variables are not set.
 
 ## Step 7: Initialize Vertex AI
 
-Create `lib/ai/vertex-ai.ts`:
+The Vertex AI client is already configured in `lib/ai/vertex-ai.ts` with lazy initialization:
 
 ```typescript
-import { VertexAI } from '@google-cloud/aiplatform';
+import { VertexAI } from '@google-cloud/vertexai';
 
-export const vertexAI = new VertexAI({
-  project: process.env.GOOGLE_CLOUD_PROJECT!,
-  location: 'us-central1', // Change to your preferred region
-});
+export function getVertexAI(): VertexAI {
+  // Lazy initialization - only creates client when needed
+  // Uses GOOGLE_CLOUD_PROJECT from .env.local
+}
 
-export const model = 'gemini-1.5-flash';
+export const model = 'gemini-2.0-flash-001'; // Latest stable model
 ```
+
+**Note**: The implementation uses lazy initialization to avoid build-time errors when environment variables are not set.
 
 ## Step 8: Run Development Server
 

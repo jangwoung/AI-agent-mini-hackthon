@@ -1,0 +1,164 @@
+openapi: 3.0.3
+info:
+  title: Skill Schedule API
+  description: |
+    計画の日程表示用。今日から14日分の日付別タスク一覧を返す。
+    取得時に ensureSchedule（未割当 step の初期配置）と runReschedule（未達・スキップの繰り越し）を実行したうえでレスポンスを返す。
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+    description: Local development
+  - url: https://your-domain.vercel.app
+    description: Production
+
+paths:
+  /api/skill/{goalId}/schedule:
+    get:
+      summary: Get schedule (today + 14 days)
+      description: |
+        指定 goal の今日〜14日分の計画を返す。
+        内部で ensureSchedule → runReschedule を実行するため、常に最新の繰り越し結果が反映される。
+      operationId: getSchedule
+      tags:
+        - Plan
+      parameters:
+        - name: goalId
+          in: path
+          required: true
+          schema:
+            type: string
+            minLength: 1
+          description: Skill goal ID (Firestore document ID)
+      responses:
+        '200':
+          description: Schedule for today + 14 days
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduleResponse'
+              example:
+                goalId: goal_abc123
+                days:
+                  - date: '2025-01-25'
+                    tasks:
+                      - stepId: step_001
+                        goalId: goal_abc123
+                        index: 1
+                        title: Set up Next.js project
+                        status: scheduled
+                        scheduledDate: '2025-01-25'
+                        estimatedMinutes: 30
+                        done: false
+                  - date: '2025-01-26'
+                    tasks:
+                      - stepId: step_002
+                        goalId: goal_abc123
+                        index: 2
+                        title: Design data model
+                        status: scheduled
+                        scheduledDate: '2025-01-26'
+                        estimatedMinutes: 45
+                        done: false
+                alerts: []
+        '400':
+          description: Invalid goalId or validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Goal not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error (Firestore, reschedule logic)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    ScheduleResponse:
+      type: object
+      required:
+        - goalId
+        - days
+        - alerts
+      properties:
+        goalId:
+          type: string
+          description: Skill goal ID
+        days:
+          type: array
+          items:
+            $ref: '#/components/schemas/DayItem'
+          description: Today through next 13 days (14 days total)
+        alerts:
+          type: array
+          items:
+            type: string
+          description: Warning messages (e.g. deadline/duration overflow)
+    DayItem:
+      type: object
+      required:
+        - date
+        - tasks
+      properties:
+        date:
+          type: string
+          pattern: '^\d{4}-\d{2}-\d{2}$'
+          description: YYYY-MM-DD
+        tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaskItem'
+    TaskItem:
+      type: object
+      required:
+        - stepId
+        - goalId
+        - index
+        - title
+        - status
+        - scheduledDate
+        - done
+      properties:
+        stepId:
+          type: string
+        goalId:
+          type: string
+        index:
+          type: integer
+          minimum: 1
+          maximum: 5
+        title:
+          type: string
+        status:
+          type: string
+          enum: [scheduled, done, missed, skipped]
+        scheduledDate:
+          type: string
+          pattern: '^\d{4}-\d{2}-\d{2}$'
+        estimatedMinutes:
+          type: integer
+          minimum: 1
+          maximum: 480
+          nullable: true
+        done:
+          type: boolean
+    ErrorResponse:
+      type: object
+      required:
+        - error
+        - message
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+        details:
+          type: object
+          additionalProperties: true
