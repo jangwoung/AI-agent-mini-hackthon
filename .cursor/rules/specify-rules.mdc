@@ -5,6 +5,8 @@ Auto-generated from all feature plans. Last updated: 2026-01-25
 ## Active Technologies
 - TypeScript 5.x, Node.js 20.x + Next.js 14+ (App Router), Firebase Admin SDK, @google-cloud/aiplatform (Vertex AI SDK), Zod (validation) (001-skill-steps)
 - Firebase Firestore (NoSQL document database) (001-skill-steps)
+- TypeScript 5.x, Node.js 20.x + Next.js 14+ (App Router), Firebase Admin SDK, Zod (validation)。001 と同一。Vertex AI は本機能では未使用 (002-plan-schedule-reschedule)
+- Firebase Firestore。既存 `skillGoals` / `skillSteps` を拡張。任意で `rescheduleEvents` コレクション (002-plan-schedule-reschedule)
 
 - TypeScript 5.x, Node.js 20+ + Next.js 14+ (App Router), Firebase Admin SDK / Firebase JS SDK (Firestore, Auth) (001-skill-steps)
 
@@ -24,6 +26,7 @@ npm test && npm run lint
 TypeScript 5.x, Node.js 20+: Follow standard conventions
 
 ## Recent Changes
+- 002-plan-schedule-reschedule: Added TypeScript 5.x, Node.js 20.x + Next.js 14+ (App Router), Firebase Admin SDK, Zod (validation)。001 と同一。Vertex AI は本機能では未使用
 - 001-skill-steps: Added TypeScript 5.x, Node.js 20.x + Next.js 14+ (App Router), Firebase Admin SDK, @google-cloud/aiplatform (Vertex AI SDK), Zod (validation)
 
 - 001-skill-steps: Added TypeScript 5.x, Node.js 20+ + Next.js 14+ (App Router), Firebase Admin SDK / Firebase JS SDK (Firestore, Auth)

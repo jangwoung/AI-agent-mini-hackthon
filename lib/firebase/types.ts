@@ -1,11 +1,28 @@
 export type SkillType = 'nextjs' | 'go' | 'gcp'
 
+export interface SkillGoalScheduleFields {
+  deadline?: string
+  startDate?: string
+  duration?: number
+}
+
 export interface SkillGoal {
   id: string
   skillType: SkillType
   goalText: string
   createdAt: Date
   userId?: string
+  deadline?: string
+  startDate?: string
+  duration?: number
+}
+
+export type StepStatus = 'scheduled' | 'done' | 'missed' | 'skipped'
+
+export interface SkillStepScheduleFields {
+  scheduledDate?: string
+  status?: StepStatus
+  estimatedMinutes?: number
 }
 
 export interface SkillStep {
@@ -17,6 +34,9 @@ export interface SkillStep {
   deliverable: string
   done: boolean
   createdAt: Date
+  scheduledDate?: string
+  status?: StepStatus
+  estimatedMinutes?: number
 }
 
 export type SubmissionContentType = 'code' | 'url'

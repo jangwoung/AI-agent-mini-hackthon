@@ -80,6 +80,37 @@ export const StepCompletionRequestSchema = z.object({
   done: z.boolean(),
 })
 
+/** 002: Step schedule status */
+export const StepStatusSchema = z.enum([
+  'scheduled',
+  'done',
+  'missed',
+  'skipped',
+])
+
+/** 002: YYYY-MM-DD date string */
+export const DateYYYYMMDDSchema = z.string().regex(/^\d{4}-\d{2}-\d{2}$/)
+
+/** 002: Schedule API params (goalId from path) */
+export const ScheduleParamsSchema = z.object({
+  goalId: z.string().min(1),
+})
+
+/** 002: PATCH /api/skill/step/[stepId] extended body (done | status | scheduledDate) */
+export const StepUpdateRequestSchema = z
+  .object({
+    done: z.boolean().optional(),
+    status: StepStatusSchema.optional(),
+    scheduledDate: DateYYYYMMDDSchema.optional(),
+  })
+  .refine(
+    (d) =>
+      d.done !== undefined ||
+      d.status !== undefined ||
+      d.scheduledDate !== undefined,
+    { message: 'At least one of done, status, scheduledDate required' }
+  )
+
 /** API: POST /api/skill/review request body */
 export const ReviewRequestSchema = z.object({
   stepId: z.string().min(1),

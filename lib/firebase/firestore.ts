@@ -122,6 +122,11 @@ export async function getStepsByGoalId(goalId: string): Promise<SkillStep[]> {
       deliverable: data.deliverable,
       done: data.done ?? false,
       createdAt: toDate(data.createdAt),
+      ...(data.scheduledDate != null && { scheduledDate: data.scheduledDate }),
+      ...(data.status != null && { status: data.status }),
+      ...(data.estimatedMinutes != null && {
+        estimatedMinutes: data.estimatedMinutes,
+      }),
     }
   })
 }
@@ -296,7 +301,26 @@ export async function getSkillGoalById(goalId: string): Promise<SkillGoal | null
     goalText: data.goalText,
     createdAt: toDate(data.createdAt),
     ...(data.userId && { userId: data.userId }),
+    ...(data.deadline != null && { deadline: data.deadline }),
+    ...(data.startDate != null && { startDate: data.startDate }),
+    ...(data.duration != null && { duration: data.duration }),
   }
+}
+
+/**
+ * Update goal schedule fields (002): deadline, startDate, duration.
+ */
+export async function updateSkillGoalSchedule(
+  goalId: string,
+  updates: {
+    deadline?: string
+    startDate?: string
+    duration?: number
+  }
+): Promise<void> {
+  const payload: Record<string, unknown> = { ...updates }
+  if (Object.keys(payload).length === 0) return
+  await db().collection('skillGoals').doc(goalId).update(payload)
 }
 
 /**
@@ -320,5 +344,31 @@ export async function getSkillStepById(stepId: string): Promise<SkillStep | null
     deliverable: data.deliverable,
     done: data.done ?? false,
     createdAt: toDate(data.createdAt),
+    ...(data.scheduledDate != null && { scheduledDate: data.scheduledDate }),
+    ...(data.status != null && { status: data.status }),
+    ...(data.estimatedMinutes != null && {
+      estimatedMinutes: data.estimatedMinutes,
+    }),
   }
+}
+
+/**
+ * Update step schedule fields (002). Use updateStepCompletion for done-only updates.
+ */
+export async function updateStepSchedule(
+  stepId: string,
+  updates: {
+    scheduledDate?: string
+    status?: SkillStep['status']
+    estimatedMinutes?: number
+  }
+): Promise<void> {
+  const payload: Record<string, unknown> = { ...updates }
+  if (updates.status === 'done') {
+    payload.done = true
+  } else if (updates.status !== undefined) {
+    payload.done = false
+  }
+  if (Object.keys(payload).length === 0) return
+  await db().collection('skillSteps').doc(stepId).update(payload)
 }
